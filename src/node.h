@@ -6,6 +6,7 @@
 #include	<sstream>
 #include	<string>
 
+
 // forward declare, abstract Visitor super class
 class Visitor;
 
@@ -87,8 +88,9 @@ public:
 };
 
 // exp relop exp
-class 
-Cal : public Exp {
+// (relop?)
+// Cal: calculate?
+class Cal : public Exp {
 	friend class ShowVisitor;
 	friend class CodeVisitor;
 
@@ -201,7 +203,7 @@ public:
 // print intermediate code
 class CodeVisitor : public Visitor {
 private: 
-	static int t;	// record t number
+	static int t;	// record t number, 用来生产中间变量t0, t1, t2...
 	static int l;	// record l number
 	static std::string senStart;	
 	static std::string senNext;
@@ -224,8 +226,8 @@ public:
 	static std::string codeL() {
 		std::string label = "L";
 		std::stringstream temp;
-		temp<<l++;
-		label+=temp.str();
+		temp << l++;
+		label += temp.str();
 		return label;
 	}
 	
@@ -241,23 +243,22 @@ public:
 };
 
  
-class 
-AstContext {
-public: 
-	// save ast
-	std::vector<Node*> node;
+class AstContext {
+	public: 
+		// save ast
+		std::vector<Node*> node;
 
-	~AstContext() {
-		clearNode();
-	}
-	
-	// clear node 
-	void clearNode() {
-		for(unsigned int i = 0; i < node.size(); ++i) {
-	    		delete node[i];
+		~AstContext() {
+			clearNode();
 		}
-		node.clear();
-	}
+		
+		// clear node 
+		void clearNode() {
+			for(unsigned int i = 0; i < node.size(); ++i) {
+				delete node[i];
+			}
+			node.clear();
+		}
 };
 
 #endif 

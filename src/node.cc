@@ -4,7 +4,7 @@
 #include <sstream>
 
 // initialize static variable
-int ShowVisitor::index = 0;
+int ShowVisitor::index = 0; // 控制缩进的tab数量
 int CodeVisitor::t = 0;
 int CodeVisitor::l = 0;
 
@@ -45,17 +45,11 @@ std::string Whst::Accept(const Visitor &v) const {
 }
 
 std::string ShowVisitor::VisitUnary(const Unary *u) const {
-	// 输出缩进
-	ShowVisitor::print_index(index);
-	// 输出op	
-	std::cout<<u->op<<std::endl;
-	// 设置缩进（每输出一个op，缩进一次）
-	index++; 
-	// 输出left
-	u->left->Accept(*this);
-	// 输出完缩进-1	
-	index--; 
-	
+	ShowVisitor::print_index(index); // 输出缩进
+	std::cout<<u->op<<std::endl; // 输出op	
+	index++; // 设置缩进（每输出一个op，缩进一次）
+	u->left->Accept(*this); // 输出left
+	index--; // 输出完缩进-1	
 	return "0";
 }
 
@@ -143,7 +137,7 @@ std::string ShowVisitor::VisitWhst(const Whst *w) const {
 // 将value转换为string类型并返回
 std::string CodeVisitor::VisitNumber(const Number *n) const {
 	std::stringstream temp;
-	temp<<n->value;
+	temp << n->value;
 	return temp.str();
 }
 
@@ -170,7 +164,7 @@ std::string CodeVisitor::VisitBinary(const Binary *b) const {
 	// 生成新的临时变量t赋值给code
 	std::string code = CodeVisitor::codeT();
 	// 输出三地址代码
-	std::cout<<code<<" = "<<code1<<b->op<<code2<<std::endl;
+	std::cout<<code<<"="<<code1<<b->op<<code2<<std::endl;
 	// 返回本条语句产生的临时变量t
 	return code;
 }
